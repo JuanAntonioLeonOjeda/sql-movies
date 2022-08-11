@@ -11,7 +11,7 @@ router
   .use('/auth', authRouter)
   .use('/user', userRouter)
   .use('/movie', movieRouter)
-  .use('actor', actorRouter)
+  .use('/actor', actorRouter)
   .use('/director', directorRouter)
   .use('/genre', genreRouter)
   

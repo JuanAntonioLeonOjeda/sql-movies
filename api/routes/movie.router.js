@@ -1,7 +1,10 @@
 const router = require ('express').Router()
 
-// router
-//   .post('/signup', signup)
-//   .post('/login', login)
+const {
+  createMovie
+} = require('../controllers/movie.controller')
+
+router
+  .post('/', createMovie)
 
 module.exports = router
