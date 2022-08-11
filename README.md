@@ -1,4 +1,4 @@
-# movie Thefts API
+# SQL-Movies API
 
 ### Auth Endpoints
 
