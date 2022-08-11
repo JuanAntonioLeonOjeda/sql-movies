@@ -21,7 +21,10 @@ try {
     .use(cors())
     .use(morgan('dev'))
     .use(express.json())
-    .use('/api', require ('.api/routes'))
+    .use('/api', require ('./api/routes'))
+
+    .listen(process.env.PORT)
+    console.log(`Listening on port: ${process.env.PORT}`)
 } catch (error) {
   console.error(error)
 }
