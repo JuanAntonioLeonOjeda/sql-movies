@@ -1,5 +1,6 @@
 const { DataTypes } = require ('sequelize')
 const sequelize = require ('../database')
+
 const {
   is18
 } = require ('../utils')
