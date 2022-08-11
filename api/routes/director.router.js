@@ -1,7 +1,10 @@
 const router = require ('express').Router()
 
-// router
-//   .post('/signup', signup)
-//   .post('/login', login)
+const {
+  createDirector
+} = require('../controllers/director.controller')
+
+router
+  .post('/', createDirector)
 
 module.exports = router

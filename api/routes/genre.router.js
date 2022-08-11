@@ -1,7 +1,10 @@
 const router = require ('express').Router()
 
-// router
-//   .post('/signup', signup)
-//   .post('/login', login)
+const {
+  createGenre
+} = require ('../controllers/genre.controller')
+
+router
+  .post('/', createGenre)
 
 module.exports = router
