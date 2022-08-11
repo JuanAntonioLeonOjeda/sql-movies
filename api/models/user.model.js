@@ -27,7 +27,9 @@ const User = sequelize.define('user', {
     allowNull: false,
     validate: {
       checkAge (value) {
-        is18(value)
+        if (!is18(value)) {
+          throw new Error ('User must be at least 18 years old')
+        }
       }
     }
   }

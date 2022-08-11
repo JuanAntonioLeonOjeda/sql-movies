@@ -5,8 +5,9 @@ function is18(value) {
   var month = today.getMonth() - birthDate.getMonth()
   month < 0 || (month === 0 && today.getDate() < birthDate.getDate()) ? age-- : age
   if (age < 18) {
-    throw new Error ('User must be at least 18 years old')
+    return false
   }
+  return true
 }
 
 module.exports = { 
