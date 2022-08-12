@@ -1,15 +1,15 @@
-const User = require('../models/user.model')
+const User = require ('../models/user.model')
+
+const bcrypt = require ('bcrypt')
 
 async function signup (req, res) {
   try {
-    const user = await User.create({
-      userName: req.body.userName,
-      email: req.body.email,
-      birthDate: req.body.birthDate
-    },
-    {fields: ['userName', 'email', 'birthDate']}
-    )
-
+    req.body.password = bcrypt.hashSync(req.body.password, 10)
+    const user = await User.create( req.body,
+      { 
+        fields: ['userName', 'email', 'birthDate', 'password']
+      })
+    delete user.password
     res.status(200).json({ message: 'User created!', user: user })
   } catch (error) {
     res.status(500).send(error.message)
