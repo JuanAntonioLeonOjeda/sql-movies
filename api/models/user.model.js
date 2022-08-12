@@ -1,6 +1,9 @@
 const { DataTypes } = require ('sequelize')
 const sequelize = require ('../database')
 
+const Movie = require ('./movie.model')
+const Rating = require ('./rating.model')
+
 const {
   is18
 } = require ('../utils')
@@ -34,5 +37,11 @@ const User = sequelize.define('user', {
     }
   }
 })
+
+User.hasMany(Rating)
+Rating.belongsTo(User)
+
+Movie.belongsToMany(User, { through: 'FavMovies' })
+User.belongsToMany(Movie, { through: 'FavMovies' })
 
 module.exports = User

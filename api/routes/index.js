@@ -6,6 +6,7 @@ const movieRouter = require('./movie.router')
 const actorRouter = require('./actor.router')
 const directorRouter = require('./director.router')
 const genreRouter = require('./genre.router')
+const ratingRouter = require('./rating.router')
 
 router
   .use('/auth', authRouter)
@@ -14,5 +15,6 @@ router
   .use('/actor', actorRouter)
   .use('/director', directorRouter)
   .use('/genre', genreRouter)
+  .use('/rating', ratingRouter)
   
 module.exports = router
