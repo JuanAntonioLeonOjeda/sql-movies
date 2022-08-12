@@ -9,8 +9,8 @@ async function signup (req, res) {
       { 
         fields: ['userName', 'email', 'birthDate', 'password']
       })
-    delete user.password
-    res.status(200).json({ message: 'User created!', user: user })
+    // delete user.password //no funciona porque user está heredando la propiedad del constructor User (creo)
+    res.status(200).json({ message: 'User created!', userName: user.userName, email: user.email })
   } catch (error) {
     res.status(500).send(error.message)
   }
