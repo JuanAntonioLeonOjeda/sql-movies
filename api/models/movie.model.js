@@ -3,6 +3,7 @@ const sequelize = require ('../database')
 
 const Actor = require ('./actor.model')
 const Rating = require ('./rating.model')
+const Awards = require ('./awards.model')
 
 const Movie = sequelize.define('movie', {
   title: {
@@ -19,6 +20,9 @@ const Movie = sequelize.define('movie', {
 
 Movie.hasMany(Rating)
 Rating.belongsTo(Movie)
+
+Movie.hasOne(Awards)
+Awards.belongsTo(Movie)
 
 Movie.belongsToMany(Actor, { through: 'Movie_Actor' })
 Actor.belongsToMany(Movie, { through: 'Movie_Actor' })
