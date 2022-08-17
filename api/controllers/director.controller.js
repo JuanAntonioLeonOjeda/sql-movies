@@ -48,7 +48,7 @@ async function deleteDirector (req, res) {
         id: req.params.id
       }
     })
-    return !director ? res.status(404).send('Director not found') : res.status(200).json(director)
+    return !director ? res.status(404).send('Director not found') : res.status(200).send('Director deleted')
   } catch (error) {
     return res.status(500).send(error.message)
   }
