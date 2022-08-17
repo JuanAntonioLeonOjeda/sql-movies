@@ -1,6 +1,10 @@
 const router = require ('express').Router()
 
 const {
+  checkAuth
+} = require ('../utils')
+
+const {
   getAllMovies,
   getOneMovie,
   createMovie,
@@ -10,7 +14,7 @@ const {
 } = require('../controllers/movie.controller')
 
 router
-  .get('/', getAllMovies)
+  .get('/', checkAuth, getAllMovies)
   .get('/:id', getOneMovie)
   .post('/', createMovie)
   .put('/:id', updateMovie)
