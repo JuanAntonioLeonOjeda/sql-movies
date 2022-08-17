@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "HOST=$(hostname).local nodemon index.js"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
