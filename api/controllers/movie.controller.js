@@ -57,13 +57,11 @@ async function updateMovie (req, res) {
 async function assignAwards (req, res) {
   try {
     const movie = await Movie.findByPk(req.params.id)
-    if ( !movie ) {
-      return res.status(404).send('Movie not found')
-    }
+    if ( !movie ) return res.status(404).send('Movie not found')
+
     const awards = await Awards.findByPk(req.body.awardsId)
-    if ( !awards ) {
-      return res.status(404).send('Awards code not found')
-    }
+    if ( !awards ) return res.status(404).send('Awards code not found')
+    
     await movie.setAward(awards)
     return res.status(200).json({ message: 'Awards assigned to movie: ' + movie.title, movie: movie })
   } catch (error) {
