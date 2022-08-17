@@ -46,9 +46,13 @@ async function updateActor (req, res) {
 
 async function addMovie (req, res) {
   try {
-      const actor = await Actor.findByPk(req.params.id)
+    const actor = await Actor.findByPk(req.params.id)
+    if (typeof req.body.movieId === 'object') {
       actor.addMovies(req.body.movieId)
-      return res.status(200).send('Movie added to actor')
+    } else {
+      actor.addMovie(req.body.movieId)
+    }
+    return !actor ? res.status(404).send('Actor not found') : res.status(200).send('Movie added to actor')
   } catch (error) {
     return res.status(500).send(error.message)
   }
