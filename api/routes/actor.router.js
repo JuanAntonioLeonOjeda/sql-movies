@@ -5,6 +5,7 @@ const {
   getOneActor,
   createActor,
   updateActor,
+  addMovie,
   deleteActor
 } = require ('../controllers/actor.controller')
 
@@ -13,6 +14,7 @@ router
   .get('/:id', getOneActor)
   .post('/', createActor)
   .put('/:id', updateActor)
+  .put('/:id/movie', addMovie)
   .delete('/:id', deleteActor)
 
 module.exports = router
