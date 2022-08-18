@@ -29,6 +29,10 @@ async function getOneMovie (req, res) {
     const movie = await Movie.findByPk(req.params.id, {
       include: [Awards, Director, Genre]
     })
+    // const movie = await Movie.findByPk(req.params.id)
+    // await movie.setDirector(1)
+    // const director = await movie.getDirector()
+    // return !movie ? res.status(404).send('Movie not found') : res.status(200).json({ movie: movie, director: director })
     return !movie ? res.status(404).send('Movie not found') : res.status(200).json(movie)
   } catch (error) {
     return res.status(500).send(error.message)
