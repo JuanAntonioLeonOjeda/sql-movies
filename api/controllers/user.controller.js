@@ -1,4 +1,5 @@
 const User = require ('../models/user.model')
+const Movie = require ('../models/movie.model')
 
 async function getAllUsers (req, res) {
   try {
@@ -32,6 +33,39 @@ async function updateUser (req, res) {
   }
 }
 
+async function getFavouriteMovies (req, res) {
+  try {
+    const user = await User.findByPk(req.params.id)
+    const movies = await user.getMovies()
+    return res.status(200).json(movies)
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
+
+async function addFavouriteMovie (req, res) {
+  try {
+    const user = await User.findByPk(req.params.id)
+    const movie = await Movie.findByPk(req.body.movieId)
+    user.addMovie(movie)
+    return res.status(200).json({ message: 'Movie added to favourites', movie: movie })
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
+
+async function removeFavouriteMovie (req, res) {
+  try {
+    const user = await User.findByPk(req.params.id)
+    const movie = await Movie.findByPk(req.body.movieId)
+    user.removeMovie(movie)
+    return res.status(200).json({ message: 'Movie removed from favourites' })
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+}
+
+
 async function deleteUser (req, res) {
   try {
     const user = await User.destroy({
@@ -49,5 +83,8 @@ module.exports = {
   getAllUsers,
   getOneUser,
   updateUser,
+  getFavouriteMovies,
+  addFavouriteMovie,
+  removeFavouriteMovie,
   deleteUser
 }
