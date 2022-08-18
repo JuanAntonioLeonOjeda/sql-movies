@@ -14,7 +14,7 @@ const {
 } = require('../controllers/movie.controller')
 
 router
-  .get('/', checkAuth, getAllMovies)
+  .get('/', getAllMovies)
   .get('/:id', getOneMovie)
   .post('/', createMovie)
   .put('/:id', updateMovie)

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user.model')
 
+
 function is18(value) {
   const today = new Date()
   const birthDate = new Date(value)
@@ -18,7 +19,7 @@ function checkAuth (req, res, next) {
 
   jwt.verify(req.headers.token, process.env.SECRET, async (err, decoded) => {
     if (err) return res.status(401).send('Token not valid')
-    const user = await User.findOne({
+    const user = await User.findOne({ // error: User.findOne is not a function - por qué?
       where: {
         email: decoded.email
       }
