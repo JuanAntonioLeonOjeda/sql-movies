@@ -80,3 +80,7 @@
 | POST   | /rating/me/:id      | YES   |                             | Create one rating                  |            | { rating }                  |
 | PUT    | /rating/:id         | YES   | Admin                       | Update one rating                  | body       | "rating updated", { rating } |
 | DELETE | /rating/:id         | YES   | Admin                       | Remove one rating                  |            | "rating deleted"            |
+
+
+UML
+![alt text](https://github.com/JuanAntonioLeonOjeda/sql-movies/blob/main/UML.JPG?raw=true)
