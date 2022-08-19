@@ -2,23 +2,21 @@
 
 ### Auth Endpoints
 
-| METHOD | ENDPOINT      | TOKEN | ROLE     | DESCRIPTION           | POST PARAMS                                                 | RETURNS |
-| ------ | ------------- | ----- | -------- | --------------------- | ----------------------------------------------------------- | ------- |
-| POST   | /auth/signup  | -     | -        | User Sign Up          | fullName, email, password, confirm_password                 | token   |
-| POST   | /auth/login   | -     | -        | User Login            | email, password                                             | token   |
+| METHOD | ENDPOINT      | TOKEN | ROLE     | DESCRIPTION           | POST PARAMS                                                 | RETURNS        |
+| ------ | ------------- | ----- | -------- | --------------------- | ----------------------------------------------------------- | -------------- |
+| POST   | /auth/signup  | -     | -        | User Sign Up          | fullName, email, password                                   | email, token   |
+| POST   | /auth/login   | -     | -        | User Login            | email, password                                             | email, token   |
 
 ### Users Endpoints
 
-| METHOD | ENDPOINT                  | TOKEN | ROLE  | DESCRIPTION                  | POST PARAMS                | RETURNS                              |
-| ------ | ------------------------- | ----- | ----- | ---------------------------- | -------------------------- | ------------------------------------ |
+| METHOD | ENDPOINT                 | TOKEN | ROLE  | DESCRIPTION                  | POST PARAMS                | RETURNS                              |
+| ------ | ------------------------ | ----- | ----- | ---------------------------- | -------------------------- | ------------------------------------ |
 | GET    | /user                    | YES   | Admin | Get all users                | -                          | [{ users }]                          |
-| GET    | /user/me                 | YES   | -     | Get own profile              | user_id                    | { user }                             |
 | GET    | /user/:userId            | YES   | Admin | Get one user                 | user_id                    | { user }                             |
+| GET    | /user/me/favourite       | YES   | -     | Get own favourite movies     | -                          | [{ movie }]                          |
 | PUT    | /user/:userId            | YES   | Admin | Update one user              | user_id, body              | { user }                             |
-| PUT    | /user/me                 | YES   | -     | Update own profile           | user_id                    | { user }                             |
+| PUT    | /user/me/favourite       | YES   | -     | Add favourite movie          | -                          | {message: string, movie: {movie}}    |
 | DELETE | /user/:userId            | YES   | Admin | Remove user profile          | user_id                    | "Profile deleted"                    |
-| POST   | /user/me/password        | YES   | -     | Change own password          | old_password, new_password | "Password updated"                   |
-
 
 ### Movies Endpoints
 
