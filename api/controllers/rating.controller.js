@@ -22,8 +22,15 @@ async function getOneRating (req, res) {
 
 async function getMyRatings (req, res) {
   try {
-    const user = await User.findByPk(req.params.id)
-    const ratings = await user.getRatings()
+    const user = await User.findByPk(res.locals.user.id)
+    const ratings = await user.getRatings()             //Lazy loading
+    // const result = ratings.map(async rating => {     //Intentando mostrar la info de la película para cada valoración, pero de devuelve objetos vacíos.
+    //    const obj =  await Rating.findByPk(rating.dataValues.id, {
+    //     include: Movie
+    //   })
+    //   console.log(obj)
+    //   return obj
+    // })
     return res.status(200).json(ratings)
   } catch (error) {
     return res.status(500).send(error.message)
@@ -33,7 +40,7 @@ async function getMyRatings (req, res) {
 async function createRating (req, res) {
   try {
     const rating = await Rating.create(req.body)
-    const user = await User.findByPk(req.params.userId)
+    const user = await User.findByPk(res.locals.user.id)
     const movie = await Movie.findByPk(req.params.movieId)
     user.addRating(rating)
     movie.addRating(rating)

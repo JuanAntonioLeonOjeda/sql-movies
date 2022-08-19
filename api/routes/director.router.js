@@ -1,6 +1,11 @@
 const router = require ('express').Router()
 
 const {
+  checkAuth,
+  checkRole
+} = require ('../utils')
+
+const {
   getAllDirectors,
   getOneDirector,
   createDirector,

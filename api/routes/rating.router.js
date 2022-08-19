@@ -1,6 +1,11 @@
 const router = require ('express').Router()
 
 const {
+  checkAuth,
+  checkRole
+} = require ('../utils')
+
+const {
   getAllRatings,
   getOneRating,
   getMyRatings,
@@ -10,11 +15,11 @@ const {
 } = require('../controllers/rating.controller')
 
 router
-  .get('/', getAllRatings)
-  .get('/:id', getOneRating)
-  .get('/profile/:id', getMyRatings)
-  .post('/:userId/:movieId', createRating)
-  .put('/:id', updateRating)
-  .delete('/:id', deleteRating)
+  .get('/', checkAuth, checkRole, getAllRatings)
+  .get('/me', checkAuth, getMyRatings)
+  .get('/:id', checkAuth, checkRole, getOneRating)
+  .post('/me/:movieId', checkAuth, createRating)
+  .put('/:id', checkAuth, checkRole, updateRating)
+  .delete('/:id', checkAuth, checkRole, deleteRating)
 
 module.exports = router

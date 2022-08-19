@@ -35,7 +35,7 @@ async function updateUser (req, res) {
 
 async function getFavouriteMovies (req, res) {
   try {
-    const user = await User.findByPk(req.params.id)
+    const user = await User.findByPk(res.locals.user.id)
     const movies = await user.getMovies()
     return res.status(200).json(movies)
   } catch (error) {
@@ -45,7 +45,7 @@ async function getFavouriteMovies (req, res) {
 
 async function addFavouriteMovie (req, res) {
   try {
-    const user = await User.findByPk(req.params.id)
+    const user = await User.findByPk(res.locals.user.id)
     const movie = await Movie.findByPk(req.body.movieId)
     user.addMovie(movie)
     return res.status(200).json({ message: 'Movie added to favourites', movie: movie })
@@ -56,7 +56,7 @@ async function addFavouriteMovie (req, res) {
 
 async function removeFavouriteMovie (req, res) {
   try {
-    const user = await User.findByPk(req.params.id)
+    const user = await User.findByPk(res.locals.user.id)
     const movie = await Movie.findByPk(req.body.movieId)
     user.removeMovie(movie)
     return res.status(200).json({ message: 'Movie removed from favourites' })

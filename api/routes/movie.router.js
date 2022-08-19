@@ -1,7 +1,8 @@
 const router = require ('express').Router()
 
 const {
-  checkAuth
+  checkAuth,
+  checkRole
 } = require ('../utils')
 
 const {
@@ -15,10 +16,10 @@ const {
 
 router
   .get('/', checkAuth, getAllMovies)
-  .get('/:id', getOneMovie)
-  .post('/', createMovie)
-  .put('/:id', updateMovie)
-  .put('/:id/awards', assignAwards)
-  .delete('/:id', deleteMovie)
+  .get('/:id', checkAuth, getOneMovie)
+  .post('/', checkAuth, checkRole, createMovie)
+  .put('/:id', checkAuth, checkRole, updateMovie)
+  .put('/:id/awards', checkAuth, checkRole, assignAwards)
+  .delete('/:id', checkAuth, checkRole, deleteMovie)
 
 module.exports = router

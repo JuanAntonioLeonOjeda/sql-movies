@@ -1,6 +1,11 @@
 const router = require ('express').Router()
 
 const {
+  checkAuth,
+  checkRole
+} = require ('../utils')
+
+const {
   getAllUsers,
   getOneUser,
   updateUser,
@@ -11,12 +16,12 @@ const {
 } = require ('../controllers/user.controller')
 
 router
-  .get('/', getAllUsers)
-  .get('/:id', getOneUser)
-  .get('/:id/favourite', getFavouriteMovies)
-  .put('/:id', updateUser)
-  .put('/:id/favourite', addFavouriteMovie)
-  .delete('/:id', deleteUser)
-  .delete('/:id/favourite', removeFavouriteMovie)
+  .get('/', checkAuth, checkRole, getAllUsers)
+  .get('/:id', checkAuth, checkRole, getOneUser)
+  .get('/me/favourite', checkAuth, getFavouriteMovies)
+  .put('/:id', checkAuth, checkRole, updateUser)
+  .put('/me/favourite', checkAuth, addFavouriteMovie)
+  .delete('/:id', checkAuth, checkRole, deleteUser)
+  .delete('/me/favourite', checkAuth, removeFavouriteMovie)
 
 module.exports = router
