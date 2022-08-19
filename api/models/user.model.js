@@ -6,7 +6,7 @@ const Rating = require ('./rating.model')
 
 const {
   is18
-} = require ('../utils')
+} = require ('../utils/validations')
 
 const User = sequelize.define('user', {
   userName: {
