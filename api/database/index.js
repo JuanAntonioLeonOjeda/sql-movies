@@ -10,6 +10,7 @@ function DB() {
   console.log('> Connected to DB!')
 
   this.sequelize.sync().then(() => {
+    require('../database/relationships')
     console.log('> Database models synchronized')
   })
 }
