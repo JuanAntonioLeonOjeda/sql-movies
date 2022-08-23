@@ -5,21 +5,12 @@ const {
   checkRole
 } = require ('../utils')
 
-const {
-  getAllRatings,
-  getOneRating,
-  getMyRatings,
-  createRating,
-  updateRating,
-  deleteRating
-} = require('../controllers/rating.controller')
-
 router
-  .get('/', checkAuth, checkRole, getAllRatings)
-  .get('/me', checkAuth, getMyRatings)
-  .get('/:id', checkAuth, checkRole, getOneRating)
-  .post('/me/:movieId', checkAuth, createRating)
-  .put('/:id', checkAuth, checkRole, updateRating)
-  .delete('/:id', checkAuth, checkRole, deleteRating)
+  .get('/', checkAuth, checkRole, require('../controllers/rating.controller').getAllRatings)
+  .get('/me', checkAuth, require('../controllers/rating.controller').getMyRatings)
+  .get('/:id', checkAuth, checkRole, require('../controllers/rating.controller').getOneRating)
+  .post('/me/:movieId', checkAuth, require('../controllers/rating.controller').createRating)
+  .put('/:id', checkAuth, checkRole, require('../controllers/rating.controller').updateRating)
+  .delete('/:id', checkAuth, checkRole, require('../controllers/rating.controller').deleteRating)
 
 module.exports = router

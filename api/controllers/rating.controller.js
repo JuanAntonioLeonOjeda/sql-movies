@@ -31,7 +31,7 @@ async function getMyRatings (req, res) {
     //   console.log(obj)
     //   return obj
     // })
-    return res.status(200).json(ratings)
+    return res.status(200).json({ratings})
   } catch (error) {
     return res.status(500).send(error.message)
   }

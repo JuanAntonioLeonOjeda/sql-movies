@@ -5,19 +5,11 @@ const {
   checkRole
 } = require ('../utils')
 
-const {
-  getAllAwards,
-  getOneAward,
-  createAwards,
-  updateAwards,
-  deleteAwards
-} = require ('../controllers/awards.controller')
-
 router
-  .get('/', getAllAwards)
-  .get('/:id', getOneAward)
-  .post('/', createAwards)
-  .put('/:id', updateAwards)
-  .delete('/:id', deleteAwards)
+  .get('/', checkAuth, checkRole, require ('../controllers/awards.controller').getAllAwards)
+  .get('/:id', checkAuth, checkRole, require ('../controllers/awards.controller').getOneAward)
+  .post('/', checkAuth, checkRole, require ('../controllers/awards.controller').createAwards)
+  .put('/:id', checkAuth, checkRole, require ('../controllers/awards.controller').updateAwards)
+  .delete('/:id', checkAuth, checkRole, require ('../controllers/awards.controller').deleteAwards)
 
 module.exports = router

@@ -1,12 +1,7 @@
 const router = require ('express').Router()
 
-const {
-  signup,
-  login
-} = require('../controllers/auth.controller')
-
 router
-  .post('/signup', signup)
-  .post('/login', login)
+  .post('/signup', require('../controllers/auth.controller').signup)
+  .post('/login', require('../controllers/auth.controller').login)
 
 module.exports = router

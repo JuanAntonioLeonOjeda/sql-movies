@@ -5,23 +5,13 @@ const {
   checkRole
 } = require ('../utils')
 
-const {
-  getAllUsers,
-  getOneUser,
-  updateUser,
-  getFavouriteMovies,
-  addFavouriteMovie,
-  removeFavouriteMovie,
-  deleteUser
-} = require ('../controllers/user.controller')
-
 router
-  .get('/', checkAuth, checkRole, getAllUsers)
-  .get('/:id', checkAuth, checkRole, getOneUser)
-  .get('/me/favourite', checkAuth, getFavouriteMovies)
-  .put('/:id', checkAuth, checkRole, updateUser)
-  .put('/me/favourite', checkAuth, addFavouriteMovie)
-  .delete('/:id', checkAuth, checkRole, deleteUser)
-  .delete('/me/favourite', checkAuth, removeFavouriteMovie)
+  .get('/', checkAuth, checkRole, require ('../controllers/user.controller').getAllUsers)
+  .get('/:id', checkAuth, checkRole, require ('../controllers/user.controller').getOneUser)
+  .get('/me/favourite', checkAuth, require ('../controllers/user.controller').getFavouriteMovies)
+  .put('/:id', checkAuth, checkRole, require ('../controllers/user.controller').updateUser)
+  .put('/me/favourite', checkAuth, require ('../controllers/user.controller').addFavouriteMovie)
+  .delete('/:id', checkAuth, checkRole, require ('../controllers/user.controller').deleteUser)
+  .delete('/me/favourite', checkAuth, require ('../controllers/user.controller').removeFavouriteMovie)
 
 module.exports = router

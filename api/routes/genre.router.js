@@ -5,19 +5,11 @@ const {
   checkRole
 } = require ('../utils')
 
-const {
-  getAllGenres,
-  getOneGenre,
-  createGenre,
-  updateGenre,
-  deleteGenre
-} = require ('../controllers/genre.controller')
-
 router
-  .get('/', getAllGenres)
-  .get('/:id', getOneGenre)
-  .post('/', createGenre)
-  .put('/:id', updateGenre)
-  .delete('/:id', deleteGenre)
+  .get('/', checkAuth, checkRole, require('../controllers/genre.controller').getAllGenres)
+  .get('/:id', checkAuth, checkRole, require('../controllers/genre.controller').getOneGenre)
+  .post('/', checkAuth, checkRole, require('../controllers/genre.controller').createGenre)
+  .put('/:id', checkAuth, checkRole, require('../controllers/genre.controller').updateGenre)
+  .delete('/:id', checkAuth, checkRole, require('../controllers/genre.controller').deleteGenre)
 
 module.exports = router

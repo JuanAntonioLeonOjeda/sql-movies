@@ -5,21 +5,12 @@ const {
   checkRole
 } = require ('../utils')
 
-const {
-  getAllActors,
-  getOneActor,
-  createActor,
-  updateActor,
-  addMovie,
-  deleteActor
-} = require ('../controllers/actor.controller')
-
 router
-  .get('/', getAllActors)
-  .get('/:id', getOneActor)
-  .post('/', createActor)
-  .put('/:id', updateActor)
-  .put('/:id/movie', addMovie)
-  .delete('/:id', deleteActor)
+  .get('/', checkAuth, require ('../controllers/actor.controller').getAllActors)
+  .get('/:id', checkAuth, require ('../controllers/actor.controller').getOneActor)
+  .post('/', checkAuth, checkRole, require ('../controllers/actor.controller').createActor)
+  .put('/:id', checkAuth, checkRole, require ('../controllers/actor.controller').updateActor)
+  .put('/:id/movie', checkAuth, checkRole, require ('../controllers/actor.controller').addMovie)
+  .delete('/:id', checkAuth, checkRole, require ('../controllers/actor.controller').deleteActor)
 
 module.exports = router
