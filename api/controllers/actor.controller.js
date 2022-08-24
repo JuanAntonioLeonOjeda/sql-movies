@@ -33,7 +33,6 @@ async function createActor (req, res) {
     const actor = await Actor.create({
       name: req.body.name,
     })
-    if (!actor) return res.status(404).send('Actor not found')
     actor.addMovies(req.body.movieId)
     return res.status(200).json({ message: 'Actor created', actor: actor })
   } catch (error) {

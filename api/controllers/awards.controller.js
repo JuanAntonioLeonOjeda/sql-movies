@@ -3,7 +3,11 @@ const Awards = require ('../models/awards.model')
 async function getAllAwards (req, res) {
   try {
     const awards = await Awards.findAll()
-    return res.status(200).json(awards)
+    if (awards) {
+      return res.status(200).json(awards)
+    } else {
+      return res.status(404).send('No awards found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -12,7 +16,11 @@ async function getAllAwards (req, res) {
 async function getOneAward (req, res) {
   try {
     const award = await Awards.findByPk(req.params.id)
-    return !award ? res.status(404).send('Awards code not found') : res.status(200).json(award)
+    if (award) {
+      return res.status(200).json(award)
+    } else {
+      return res.status(404).send('Movie awards not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -35,7 +43,11 @@ async function updateAwards (req, res) {
         id: req.params.id
       }
     })
-    return !awards[1].length ? res.status(404).send('Awards code not found') : res.status(200).json({ message: 'Awards updated', awards: awards[1] })
+    if (awards[1].length !== 0) {
+      return res.status(200).json({ message: 'Awards updated', awards: awards[1] })
+    } else {
+      return res.status(404).send('Movie awards not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -48,7 +60,11 @@ async function deleteAwards (req, res) {
         id: req.params.id
       }
     })
-    return !awards ? res.status(404).send('Awards code not found') : res.status(200).send('Awards deleted')
+    if (awards) {
+      return res.status(200).send('Awards deleted')
+    } else {
+      return res.status(404).send('Movie awards not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
