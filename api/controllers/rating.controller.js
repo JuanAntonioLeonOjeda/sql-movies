@@ -5,7 +5,11 @@ const User = require ('../models/user.model')
 async function getAllRatings (req, res) {
   try {
     const ratings = await Rating.findAll()
-    return res.status(200).json(ratings)
+    if (ratings) {
+      return res.status(200).json(ratings)
+    } else {
+      return res.status(404).send('No ratings found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -14,7 +18,11 @@ async function getAllRatings (req, res) {
 async function getOneRating (req, res) {
   try {
     const rating = await Rating.findByPk(req.params.id)
-    return !rating ? res.status(404).send('Rating not found') : res.status(200).json(rating)
+    if (rating) {
+      return res.status(200).json(rating)
+    } else {
+      return res.status(404).send('Rating not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -31,7 +39,11 @@ async function getMyRatings (req, res) {
     //   console.log(obj)
     //   return obj
     // })
-    return res.status(200).json({ratings})
+    if (ratings.length !== 0) {
+      return res.status(200).json(ratings)
+    } else {
+      return res.status(404).send('No ratings found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -52,13 +64,17 @@ async function createRating (req, res) {
 
 async function updateRating (req, res) {
   try {
-    const rating = await Rating.update(req.body, {
+    const [,rating] = await Rating.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
       }
     })
-    return !rating[1].length ? res.status(404).send('Rating not found') : res.status(200).json({ message: 'Rating updated', rating: Rating[1] })
+    if (rating) {
+      return res.status(200).json({ message: 'Rating updated', rating: rating })
+    } else {
+      return res.status(404).send('Rating not found') 
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -71,7 +87,11 @@ async function deleteRating (req, res) {
         id: req.params.id
       }
     })
-    return !Rating ? res.status(404).send('Rating not found') : res.status(200).json('Rating deleted')
+    if (rating) {
+      return  res.status(200).json('Rating deleted')
+    } else {
+      return res.status(404).send('Rating not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }

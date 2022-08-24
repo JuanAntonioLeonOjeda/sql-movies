@@ -20,4 +20,4 @@ let timerId = setTimeout(() => {
   })
 
   clearTimeout(timerId)
-}, 1000)
+}, 500)

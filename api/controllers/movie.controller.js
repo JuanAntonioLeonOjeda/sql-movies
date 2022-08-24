@@ -8,7 +8,11 @@ async function getAllMovies (req, res) {
   try {
     if (!Object.values(req.query).length) {
       const movies = await Movie.findAll()
-      return res.status(200).json(movies)
+      if (movies) {
+        return res.status(200).json(movies)
+      } else {
+        return res.status(404).send('No movies found')
+      }
     } else {
       const movies = await Movie.findAll({
         where: {
@@ -17,7 +21,11 @@ async function getAllMovies (req, res) {
           ]
         }
       })
-      return !movies ? res.status(404).send('No matchs found') : res.status(200).json(movies)
+      if (movies.length !== 0) {
+        return res.status(200).json(movies)
+      } else {
+        return res.status(404).send('No matches found')
+      }
     }
   } catch (error) {
     return res.status(500).send(error.message)
@@ -33,7 +41,11 @@ async function getOneMovie (req, res) {
     // await movie.setDirector(1)
     // const director = await movie.getDirector()
     // return !movie ? res.status(404).send('Movie not found') : res.status(200).json({ movie: movie, director: director })
-    return !movie ? res.status(404).send('Movie not found') : res.status(200).json(movie)
+    if (movie) {
+      return res.status(200).json(movie)
+    } else {
+      return res.status(404).send('Movie not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -50,13 +62,17 @@ async function createMovie (req, res) {
 
 async function updateMovie (req, res) {
   try {
-    const movie = await Movie.update(req.body, {
+    const [,movie] = await Movie.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
       }
     })
-    return !movie[1].length ? res.status(404).send('Movie not found') : res.status(200).json({ message: 'Movie updated', movie: movie[1] })
+    if (movie) {
+      return res.status(200).json({ message: 'Movie updated', movie: movie })
+    } else {
+      return res.status(404).send('Movie not found') 
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -68,7 +84,7 @@ async function assignAwards (req, res) {
     if ( !movie ) return res.status(404).send('Movie not found')
 
     const awards = await Awards.findByPk(req.body.awardsId)
-    if ( !awards ) return res.status(404).send('Awards code not found')
+    if ( !awards ) return res.status(404).send('Awards not found')
     
     await movie.setAward(awards)
     return res.status(200).json({ message: 'Awards assigned to movie: ' + movie.title, movie: movie })
@@ -84,7 +100,11 @@ async function deleteMovie (req, res) {
         id: req.params.id
       }
     })
-    return !movie ? res.status(404).send('Movie not found') : res.status(200).json('Movie deleted')
+    if (movie) {
+      return  res.status(200).json('Movie deleted')
+    } else {
+      return res.status(404).send('Movie not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }

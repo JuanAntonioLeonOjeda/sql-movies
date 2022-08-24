@@ -4,7 +4,11 @@ const Movie = require ('../models/movie.model')
 async function getAllUsers (req, res) {
   try {
     const users = await User.findAll()
-    return res.status(200).json(users)
+    if (users) {
+      return res.status(200).json(users)
+    } else {
+      return res.status(404).send('No users found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -13,7 +17,11 @@ async function getAllUsers (req, res) {
 async function getOneUser (req, res) {
   try {
     const user = await User.findByPk(req.params.id)
-    return !user ? res.status(404).send('User not found') : res.status(200).json(user)
+    if (user) {
+      return res.status(200).json(user)
+    } else {
+      return res.status(404).send('User not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -21,13 +29,17 @@ async function getOneUser (req, res) {
 
 async function updateUser (req, res) {
   try {
-    const user = await User.update(req.body, {
+    const [,user] = await User.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
       }
     })
-    return !user[1].length ? res.status(404).send('User not found') : res.status(200).json({ message: 'User updated', user: user[1] })
+    if (user) {
+      return res.status(200).json({ message: 'User updated', user: user })
+    } else {
+      return res.status(404).send('User not found') 
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -37,7 +49,11 @@ async function getFavouriteMovies (req, res) {
   try {
     const user = await User.findByPk(res.locals.user.id)
     const movies = await user.getMovies()
-    return res.status(200).json(movies)
+    if (movies) {
+      return res.status(200).json(movies)
+    } else {
+      return res.status(404).send('No favourite movies found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -58,6 +74,7 @@ async function removeFavouriteMovie (req, res) {
   try {
     const user = await User.findByPk(res.locals.user.id)
     const movie = await Movie.findByPk(req.body.movieId)
+    if (!movie) return res.status(404).send('Movie not found')
     user.removeMovie(movie)
     return res.status(200).json({ message: 'Movie removed from favourites' })
   } catch (error) {
@@ -73,7 +90,11 @@ async function deleteUser (req, res) {
         id: req.params.id
       }
     })
-    return !user ? res.status(404).send('User not found') : res.status(200).send('User deleted')
+    if (user) {
+      return  res.status(200).json('User deleted')
+    } else {
+      return res.status(404).send('User not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }

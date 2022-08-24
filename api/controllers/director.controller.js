@@ -3,7 +3,11 @@ const Director = require('../models/director.model')
 async function getAllDirectors (req, res) {
   try {
     const directors = await Director.findAll()
-    return res.status(200).json(directors)
+    if (directors) {
+      return res.status(200).json(directors)
+    } else {
+      return res.status(404).send('No directors found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -12,7 +16,11 @@ async function getAllDirectors (req, res) {
 async function getOneDirector (req, res) {
   try {
     const director = await Director.findByPk(req.params.id)
-    return !director ? res.status(404).send('Director not found') : res.status(200).json(director)
+    if (director) {
+      return res.status(200).json(director)
+    } else {
+      return res.status(404).send('Director not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -21,21 +29,25 @@ async function getOneDirector (req, res) {
 async function createDirector (req, res) {
   try {
     const director = await Director.create(req.body)
-    res.status(200).json({ message: 'Director created', director: director })
+    return res.status(200).json({ message: 'Director created', director: director })
   } catch (error) {
-    res.status(500).send(error.message)
+    return res.status(500).send(error.message)
   }
 }
 
 async function updateDirector (req, res) {
   try {
-    const director = await Director.update(req.body, {
+    const [,director] = await Director.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
       }
     })
-    return !director[1].length ? res.status(404).send('Director not found') : res.status(200).json({ message: 'Director updated', director: director[1] })
+    if (director) {
+      return res.status(200).json({ message: 'Director updated', director: director })
+    } else {
+      return res.status(404).send('Director not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -48,7 +60,11 @@ async function deleteDirector (req, res) {
         id: req.params.id
       }
     })
-    return !director ? res.status(404).send('Director not found') : res.status(200).send('Director deleted')
+    if (director) {
+      return res.status(200).send('Director deleted')
+    } else {
+      return res.status(404).send('Director not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }

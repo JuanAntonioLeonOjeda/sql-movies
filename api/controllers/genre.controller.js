@@ -3,7 +3,11 @@ const Genre = require('../models/genre.model')
 async function getAllGenres (req, res) {
   try {
     const genres = await Genre.findAll()
-    return res.status(200).json(genres)
+    if (genres) {
+      return res.status(200).json(genres)
+    } else {
+      return res.status(404).send('No genres found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -12,7 +16,11 @@ async function getAllGenres (req, res) {
 async function getOneGenre (req, res) {
   try {
     const genre = await Genre.findByPk(req.params.id)
-    return !genre ? res.status(404).send('Genre not found') : res.status(200).json(genre)
+    if (genre) {
+      return res.status(200).json(genre)
+    } else {
+      return res.status(404).send('Genre not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -23,21 +31,25 @@ async function createGenre (req, res) {
     const genre = await Genre.create({
       name: req.body.name
     })
-    res.status(200).json({ message: 'Genre created', genre: genre })
+    return res.status(200).json({ message: 'Genre created', genre: genre })
   } catch (error) {
-    res.status(500).send(error.message)
+    return res.status(500).send(error.message)
   }
 }
 
 async function updateGenre (req, res) {
   try {
-    const genre = await Genre.update(req.body, {
+    const [,genre] = await Genre.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
       }
     })
-    return !genre[1].length ? res.status(404).send('Genre not found') : res.status(200).json({ message: 'Genre updated', genre: genre[1] })
+    if (genre) {
+      return res.status(200).json({ message: 'Genre updated', genre: genre })
+    } else {
+      return res.status(404).send('Genre not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -50,7 +62,11 @@ async function deleteGenre (req, res) {
         id: req.params.id
       }
     })
-    return !genre ? res.status(404).send('Genre not found') : res.status(200).json('Genre deleted')
+    if (genre) {
+      return res.status(200).json('Genre deleted')
+    } else {
+      return res.status(404).send('Genre not found')
+    }
   } catch (error) {
     return res.status(500).send(error.message)
   }

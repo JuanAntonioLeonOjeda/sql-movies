@@ -42,14 +42,14 @@ async function createActor (req, res) {
 
 async function updateActor (req, res) {
   try {
-    const actor = await Actor.update({ name: req.body.name }, {
+    const [,actor] = await Actor.update({ name: req.body.name }, {
       returning: true,
       where: {
         id: req.params.id
       }
     })
-    if ( actor[1].length !== 0 ) {
-      return res.status(200).json({ message: 'Actor updated', actor: actor[1] })
+    if (actor) {
+      return res.status(200).json({ message: 'Actor updated', actor: actor })
     } else {
       return res.status(404).send('Actor not found')
     }
