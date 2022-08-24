@@ -4,11 +4,12 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+
 require('./api/database')
 
-const app = express()
-
-app
+let timerId = setTimeout(() => {
+  const app = express()
+  app
   .use(cors())
   .use(morgan('dev'))
   .use(express.json())
@@ -17,3 +18,6 @@ app
   .listen(process.env.PORT, () => {
     console.log(`> Listening on port: ${process.env.PORT}`)
   })
+
+  clearTimeout(timerId)
+}, 1000)
