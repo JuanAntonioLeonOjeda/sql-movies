@@ -11,4 +11,4 @@ function DB() {
 }
 
 const db_instance = new DB
-module.exports = db_instance
+module.exports = db_instance.sequelize

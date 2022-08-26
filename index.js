@@ -5,7 +5,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 
-const db = require('./api/database').sequelize
+const db = require('./api/database')
 
 db.sync().then(() => {
   require('./api/database/relationships')
