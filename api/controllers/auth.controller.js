@@ -1,4 +1,4 @@
-const User = require ('../models/user.model')
+const { models } = require('../database')
 
 const bcrypt = require ('bcrypt')
 const jwt = require ('jsonwebtoken')
@@ -6,12 +6,11 @@ const jwt = require ('jsonwebtoken')
 async function signup (req, res) {
   try {
     req.body.password = bcrypt.hashSync(req.body.password, 10)
-    const user = await User.create( req.body,
+    const user = await models.user.create( req.body,
       { 
         fields: ['userName', 'email', 'birthDate', 'password']
       })
 
-    // delete user.password //no funciona porque user está heredando la propiedad del constructor User (creo)
     const payload = { email: user.email }
     const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' })
 
@@ -23,7 +22,7 @@ async function signup (req, res) {
 
 async function login (req, res) {
   try {
-    const user = await User.findOne({
+    const user = await models.user.findOne({
       where: {
         email: req.body.email
       }

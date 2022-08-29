@@ -1,20 +1,17 @@
-const Movie = require ('../models/movie.model')
-const Awards = require ('../models/awards.model')
-const Director = require ('../models/director.model')
-const Genre = require ('../models/genre.model')
+const { models } = require('../database')
 const { Op } = require('sequelize')
 
 async function getAllMovies (req, res) {
   try {
     if (!Object.values(req.query).length) {
-      const movies = await Movie.findAll()
+      const movies = await models.movie.findAll()
       if (movies) {
         return res.status(200).json(movies)
       } else {
         return res.status(404).send('No movies found')
       }
     } else {
-      const movies = await Movie.findAll({
+      const movies = await models.movie.findAll({
         where: {
           [Op.and]: [
             req.query
@@ -34,8 +31,8 @@ async function getAllMovies (req, res) {
 
 async function getOneMovie (req, res) {
   try {
-    const movie = await Movie.findByPk(req.params.id, {
-      include: [Awards, Director, Genre]
+    const movie = await models.movie.findByPk(req.params.id, {
+      include: [models.awards, models.director, mnodels.genre]
     })
     // const movie = await Movie.findByPk(req.params.id)
     // await movie.setDirector(1)
@@ -53,7 +50,7 @@ async function getOneMovie (req, res) {
 
 async function createMovie (req, res) {
   try {
-    const movie = await Movie.create(req.body)
+    const movie = await models.movie.create(req.body)
     return res.status(200).json({ message: 'Movie created', movie: movie })
   } catch (error) {
     return res.status(500).send(error.message)
@@ -62,7 +59,7 @@ async function createMovie (req, res) {
 
 async function updateMovie (req, res) {
   try {
-    const [,movie] = await Movie.update(req.body, {
+    const [,movie] = await models.movie.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
@@ -80,10 +77,10 @@ async function updateMovie (req, res) {
 
 async function assignAwards (req, res) {
   try {
-    const movie = await Movie.findByPk(req.params.id)
+    const movie = await models.movie.findByPk(req.params.id)
     if ( !movie ) return res.status(404).send('Movie not found')
 
-    const awards = await Awards.findByPk(req.body.awardsId)
+    const awards = await models.awards.findByPk(req.body.awardsId)
     if ( !awards ) return res.status(404).send('Awards not found')
     
     await movie.setAward(awards)
@@ -95,7 +92,7 @@ async function assignAwards (req, res) {
 
 async function deleteMovie (req, res) {
   try {
-    const movie = await Movie.destroy({
+    const movie = await models.movie.destroy({
       where: {
         id: req.params.id
       }

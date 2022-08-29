@@ -1,8 +1,8 @@
-const Actor = require ('../models/actor.model')
+const { models } = require('../database')
 
 async function getAllActors (req, res) {
   try {
-    const actors = await Actor.findAll({
+    const actors = await models.actor.findAll({
       where: req.query
     })
     if (actors.length  !== 0) {
@@ -17,7 +17,7 @@ async function getAllActors (req, res) {
 
 async function getOneActor (req, res) {
   try {
-    const actor = await Actor.findByPk(req.params.id)
+    const actor = await models.actor.findByPk(req.params.id)
     if (actor) {
       return res.status(200).json(actor)
     } else {
@@ -30,7 +30,7 @@ async function getOneActor (req, res) {
 
 async function createActor (req, res) {
   try {
-    const actor = await Actor.create({
+    const actor = await models.actor.create({
       name: req.body.name,
     })
     actor.addMovies(req.body.movieId)
@@ -42,7 +42,7 @@ async function createActor (req, res) {
 
 async function updateActor (req, res) {
   try {
-    const [,actor] = await Actor.update({ name: req.body.name }, {
+    const [,actor] = await models.actor.update({ name: req.body.name }, {
       returning: true,
       where: {
         id: req.params.id
@@ -60,7 +60,7 @@ async function updateActor (req, res) {
 
 async function addMovie (req, res) {
   try {
-    const actor = await Actor.findByPk(req.params.id)
+    const actor = await models.actor.findByPk(req.params.id)
     if (!actor) return res.status(404).send('Actor not found')
     if (typeof req.body.movieId === 'object') {
       await actor.addMovies(req.body.movieId)
@@ -75,7 +75,7 @@ async function addMovie (req, res) {
 
 async function deleteActor (req, res) {
   try {
-    const actor = await Actor.destroy({
+    const actor = await models.actor.destroy({
       where: {
         id: req.params.id
       }

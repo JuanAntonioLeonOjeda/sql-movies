@@ -5,11 +5,14 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 
-const db = require('./api/database')
+const sequelize = require('./api/database')
+const relations = require ('./api/database/relations')
 
-db.sync().then(() => {
-  require('./api/database/relationships')
+sequelize.authenticate().then(async () => {
   console.log('> Database models synchronized')
+
+  await relations (sequelize)
+  await sequelize.sync()
 
   const app = express()
   app
@@ -23,4 +26,4 @@ db.sync().then(() => {
   })
 })
 
-module.exports = db
+

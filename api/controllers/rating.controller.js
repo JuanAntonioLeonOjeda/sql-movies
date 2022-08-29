@@ -1,10 +1,8 @@
-const Rating = require ('../models/rating.model')
-const Movie = require('../models/movie.model')
-const User = require ('../models/user.model')
+const { models } = require('../database')
 
 async function getAllRatings (req, res) {
   try {
-    const ratings = await Rating.findAll()
+    const ratings = await models.rating.findAll()
     if (ratings) {
       return res.status(200).json(ratings)
     } else {
@@ -17,7 +15,7 @@ async function getAllRatings (req, res) {
 
 async function getOneRating (req, res) {
   try {
-    const rating = await Rating.findByPk(req.params.id)
+    const rating = await models.rating.findByPk(req.params.id)
     if (rating) {
       return res.status(200).json(rating)
     } else {
@@ -30,7 +28,7 @@ async function getOneRating (req, res) {
 
 async function getMyRatings (req, res) {
   try {
-    const user = await User.findByPk(res.locals.user.id)
+    const user = await models.user.findByPk(res.locals.user.id)
     const ratings = await user.getRatings()             //Lazy loading
     // const result = ratings.map(async rating => {     //Intentando mostrar la info de la película para cada valoración, pero de devuelve objetos vacíos.
     //    const obj =  await Rating.findByPk(rating.dataValues.id, {
@@ -51,11 +49,11 @@ async function getMyRatings (req, res) {
 
 async function createRating (req, res) {
   try {
-    const rating = await Rating.create(req.body)
-    const user = await User.findByPk(res.locals.user.id)
-    const movie = await Movie.findByPk(req.params.movieId)
-    user.addRating(rating)
-    movie.addRating(rating)
+    const rating = await models.rating.create(req.body)
+    const user = await models.user.findByPk(res.locals.user.id)
+    const movie = await models.movie.findByPk(req.params.movieId)
+    if (!movie) return res.status(404).send('Movie not found')
+    movie.addUser(user)
     res.status(200).json({ message: 'Rating created', rating: rating })
   } catch (error) {
     res.status(500).send(error.message)
@@ -64,7 +62,7 @@ async function createRating (req, res) {
 
 async function updateRating (req, res) {
   try {
-    const [,rating] = await Rating.update(req.body, {
+    const [,rating] = await models.rating.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
@@ -82,7 +80,7 @@ async function updateRating (req, res) {
 
 async function deleteRating (req, res) {
   try {
-    const rating = await Rating.destroy({
+    const rating = await models.rating.destroy({
       where: {
         id: req.params.id
       }

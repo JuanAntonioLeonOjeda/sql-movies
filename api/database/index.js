@@ -1,14 +1,17 @@
-const { Sequelize } = require('sequelize')
+const sequelize = require ('./instance')
 
-function DB() {
-  this.sequelize = new Sequelize(process.env.DATABASE, process.env.USERNAME, process.env.PASSWORD, {
-    host: process.env.HOST,
-    dialect: process.env.DIALECT,
-    port: process.env.DB_PORT,
-    logging: false
-  })
-  console.log('> Connected to DB!')
+const defineModels = [
+  require('../models/actor.model'),
+  require('../models/awards.model'),
+  require('../models/director.model'),
+  require('../models/genre.model'),
+  require('../models/movie.model'),
+  require('../models/rating.model'),
+  require('../models/user.model')
+]
+
+for (const modelDefiner of defineModels) {
+  modelDefiner(sequelize)
 }
 
-const db_instance = new DB
-module.exports = db_instance.sequelize
+module.exports = sequelize

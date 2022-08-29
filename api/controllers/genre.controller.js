@@ -1,8 +1,8 @@
-const Genre = require('../models/genre.model')
+const { models } = require('../database')
 
 async function getAllGenres (req, res) {
   try {
-    const genres = await Genre.findAll()
+    const genres = await models.genre.findAll()
     if (genres) {
       return res.status(200).json(genres)
     } else {
@@ -15,7 +15,7 @@ async function getAllGenres (req, res) {
 
 async function getOneGenre (req, res) {
   try {
-    const genre = await Genre.findByPk(req.params.id)
+    const genre = await models.genre.findByPk(req.params.id)
     if (genre) {
       return res.status(200).json(genre)
     } else {
@@ -28,7 +28,7 @@ async function getOneGenre (req, res) {
 
 async function createGenre (req, res) {
   try {
-    const genre = await Genre.create({
+    const genre = await models.genre.create({
       name: req.body.name
     })
     return res.status(200).json({ message: 'Genre created', genre: genre })
@@ -39,7 +39,7 @@ async function createGenre (req, res) {
 
 async function updateGenre (req, res) {
   try {
-    const [,genre] = await Genre.update(req.body, {
+    const [,genre] = await models.genre.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
@@ -57,7 +57,7 @@ async function updateGenre (req, res) {
 
 async function deleteGenre (req, res) {
   try {
-    const genre = await Genre.destroy({
+    const genre = await models.genre.destroy({
       where: {
         id: req.params.id
       }

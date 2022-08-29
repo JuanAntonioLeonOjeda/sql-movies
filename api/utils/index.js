@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken')
-const User = require('../models/user.model')
+const { models } = require('../database')
 
 async function checkAuth (req, res, next) {
   if (!req.headers.token) return res.status(401).send('User not logged in')
 
   jwt.verify(req.headers.token, process.env.SECRET, async (err, decoded) => {
     if (err) return res.status(401).send('Token not valid')
-    const user = await User.findOne({ where: {email: decoded.email} })
+    const user = await models.user.findOne({ where: {email: decoded.email} })
     
     if (!user) return res.status(401).send('Token not valid')
     else {

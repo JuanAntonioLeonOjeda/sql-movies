@@ -1,8 +1,8 @@
-const Awards = require ('../models/awards.model')
+const { models } = require('../database')
 
 async function getAllAwards (req, res) {
   try {
-    const awards = await Awards.findAll()
+    const awards = await models.awards.findAll()
     if (awards) {
       return res.status(200).json(awards)
     } else {
@@ -15,7 +15,7 @@ async function getAllAwards (req, res) {
 
 async function getOneAward (req, res) {
   try {
-    const award = await Awards.findByPk(req.params.id)
+    const award = await models.awards.findByPk(req.params.id)
     if (award) {
       return res.status(200).json(award)
     } else {
@@ -28,7 +28,7 @@ async function getOneAward (req, res) {
 
 async function createAwards (req, res) {
   try {
-    const awards = await Awards.create(req.body)
+    const awards = await models.awards.create(req.body)
     res.status(200).json({ message: 'Movie awards created', awards: awards })
   } catch (error) {
     res.status(500).send(error.message)
@@ -37,7 +37,7 @@ async function createAwards (req, res) {
 
 async function updateAwards (req, res) {
   try {
-    const [,awards] = await Awards.update(req.body, {
+    const [,awards] = await models.awards.update(req.body, {
       returning: true,
       where: {
         id: req.params.id
@@ -55,7 +55,7 @@ async function updateAwards (req, res) {
 
 async function deleteAwards (req, res) {
   try {
-    const awards = await Awards.destroy({
+    const awards = await models.awards.destroy({
       where: {
         id: req.params.id
       }

@@ -9,5 +9,5 @@ router
   .use('/genre', require('./genre.router'))
   .use('/rating', require('./rating.router'))
   .use('/awards', require('./awards.router'))
-  
+
 module.exports = router
